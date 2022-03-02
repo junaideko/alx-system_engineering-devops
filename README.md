@@ -1,0 +1,1 @@
+writing script in shell
