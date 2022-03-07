@@ -19,3 +19,9 @@
 18- Diaplay all lines starting with a letter
 19- Replacing capital letter with small letter
 20- Script removes c and C from input
+21- Script reverse input
+22- Display all users and home directory
+23- Find file withput using grep
+24-List all gif files
+25- Decode acrostic without using grep
+26- A git command that passes web server logs sin TSV format as input and displays the 11 top hosts
