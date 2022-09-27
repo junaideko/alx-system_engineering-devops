@@ -6,8 +6,7 @@
 # Make sure that HAproxy can be managed via an init script
 
 # Enable a dedicated PPA with the following command:
-apt-get install -y --no-install-recommends software-properties-common
-add-apt-repository -y ppa:vbernat/haproxy-2.
+apt-get -y install
 apt-get -y update
 # Install HAproxy
 apt-get install -y haproxy=2.6.\*
@@ -17,12 +16,17 @@ printf %s "
 frontend http
     bind *:80
     mode http
-    
     default_backend web-backend
+
 backend web-backend
     balance roundrobin
+    Option forwardfor
     server 25506-web-01 35.172.217.103:80 check
     server 26536-web-02 3.236.20.149:80 check
 " >> /etc/haproxy/haproxy.cfg
+
+printf %s "
+ENABLED=1
+" >> /etc/default/haproxy
 
 service haproxy restart
