@@ -10,34 +10,13 @@
 # The value of the custom HTTP header must be the hostname of the server Nginx is running on
 
 
-apt-get -y update
-apt-get install -y nginx
-
-mkdir -p /var/www/html
-touch /var/www/html/index.html
-echo "Hello World!" > /var/www/html/index.html
-touch /var/www/html/404.html
-echo "Ceci n'est pas une page" > /var/www/html/404.html
-
-printf %s "server {
-        listen 80;
-        listen [::]:80 default_server;
-        
-        add_header X-Served-By $HOSTNAME;
-                
-        root /var/www/html/;
-        index index.html index.htm index.html-debian.html;
-                
-        location /redirect_me{
-            return 301 https://www.github.com/junaideko;
-        }
-        
-        error_page 404 /404.html;
-        location /404{
-            root /var/www/html/;
-            internal;
-        }    
-    
-}" > /etc/nginx/sites-available/default
-
+sudo apt-get -y update
+sudo apt-get install -y nginx
+sudo chown -R $USER:$USER /var/www/html
+sudo rm /var/www/html/index.nginx-debian.html
+echo "Hello World!" > /var/www/html/index.nginx-debian.html
+echo "Ceci n'est pas une page" >> /var/www/html/error_404.html
+sudo sed -i '24i\	rewrite ^/redirect_me https://www.youtube.com/watch?v=QH2-TGUlwu4 permanent;' /etc/nginx/sites-enabled/default
+sudo sed -i '25i\	error_page 404 /error_404.html;' /etc/nginx/sites-enabled/default
+sudo sed -i "11i\\\tadd_header X-Served-By $HOSTNAME;" /etc/nginx/nginx.conf
 service nginx restart
